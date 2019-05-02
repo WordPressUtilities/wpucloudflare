@@ -4,7 +4,7 @@
 Plugin Name: WPU Cloudflare
 Description: Handle Cloudflare reverse proxy
 Plugin URI: https://github.com/WordPressUtilities/wpucloudflare
-Version: 0.1.0
+Version: 0.2.0
 Author: Darklg
 Author URI: http://darklg.me/
 License: MIT License
@@ -15,12 +15,20 @@ class WPUCloudflare {
 
     private $plugin_id = 'wpucloudflare';
     private $plugin_name = 'WPU Cloudflare';
+    private $plugin_level = 'manage_options';
     private $wpusettings = false;
     private $settings_values = false;
 
     public function __construct() {
+        /* Load plugin */
         add_action('plugins_loaded', array(&$this, 'plugins_loaded'));
+
+        /* Actions save post */
         add_action('save_post', array(&$this, 'save_post'));
+
+        /* Clear all */
+        add_action('wpubasesettings_after_content_settings_page_wpucloudflare', array(&$this, 'form_clear'));
+        add_action('admin_init', array(&$this, 'form_clear_postAction'));
     }
 
     /* ----------------------------------------------------------
@@ -32,6 +40,8 @@ class WPUCloudflare {
             'create_page' => true,
             'plugin_name' => $this->plugin_name,
             'plugin_id' => $this->plugin_id,
+            'parent_page' => 'options-general.php',
+            'user_cap' => $this->plugin_level,
             'option_id' => $this->plugin_id . '_options',
             'sections' => array(
                 'api_settings' => array(
@@ -52,8 +62,43 @@ class WPUCloudflare {
         );
 
         include dirname(__FILE__) . '/inc/WPUBaseSettings/WPUBaseSettings.php';
+        $this->admin_url = admin_url($this->settings_details['parent_page'] . '?page=' . $this->plugin_id);
         $this->wpusettings = new \wpucloudflare\WPUBaseSettings($this->settings_details, $this->settings);
         $this->settings_values = $this->wpusettings->get_setting_values();
+    }
+
+    /* ----------------------------------------------------------
+      Admin page
+    ---------------------------------------------------------- */
+
+    public function form_clear() {
+        echo '<hr />';
+        echo '<form action="' . $this->admin_url . '" method="post">';
+        wp_nonce_field('wpucloudflareclearall', 'wpucloudflareclearall_clear');
+        submit_button(__('Clear all cache', 'wpucloudflare'), 'primary', 'wpucloudflareclearall');
+        echo '</form>';
+    }
+
+    public function form_clear_postAction() {
+        if (!is_admin()) {
+            return;
+        }
+        if (!current_user_can($this->plugin_level)) {
+            return;
+        }
+        if (empty($_POST)) {
+            return;
+        }
+        if (!isset($_POST['wpucloudflareclearall'])) {
+            return;
+        }
+        if (!isset($_POST['wpucloudflareclearall_clear']) || !wp_verify_nonce($_POST['wpucloudflareclearall_clear'], 'wpucloudflareclearall')) {
+            return;
+        }
+
+        $this->purge_everything();
+        wp_redirect($this->admin_url . '&purge_success=1');
+        die;
     }
 
     /* ----------------------------------------------------------
