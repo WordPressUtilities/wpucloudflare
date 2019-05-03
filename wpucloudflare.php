@@ -4,7 +4,7 @@
 Plugin Name: WPU Cloudflare
 Description: Handle Cloudflare reverse proxy
 Plugin URI: https://github.com/WordPressUtilities/wpucloudflare
-Version: 0.2.0
+Version: 0.3.0
 Author: Darklg
 Author URI: http://darklg.me/
 License: MIT License
@@ -13,6 +13,7 @@ License URI: http://opensource.org/licenses/MIT
 
 class WPUCloudflare {
 
+    private $plugin_version = '0.3.0';
     private $plugin_id = 'wpucloudflare';
     private $plugin_name = 'WPU Cloudflare';
     private $plugin_level = 'manage_options';
@@ -20,8 +21,11 @@ class WPUCloudflare {
     private $settings_values = false;
 
     public function __construct() {
+
         /* Load plugin */
-        add_action('plugins_loaded', array(&$this, 'plugins_loaded'));
+        add_action('plugins_loaded', array(&$this, 'load_translation'));
+        add_action('plugins_loaded', array(&$this, 'load_autoupdate'));
+        add_action('plugins_loaded', array(&$this, 'load_settings'));
 
         /* Actions save post */
         add_action('save_post', array(&$this, 'save_post'));
@@ -29,13 +33,36 @@ class WPUCloudflare {
         /* Clear all */
         add_action('wpubasesettings_after_content_settings_page_wpucloudflare', array(&$this, 'form_clear'));
         add_action('admin_init', array(&$this, 'form_clear_postAction'));
+
+        /* External hooks */
+        add_action('wpucloudflare__purge_everything', array(&$this, 'purge_everything'));
+    }
+
+    /* ----------------------------------------------------------
+      Translation
+    ---------------------------------------------------------- */
+
+    public function load_translation() {
+        load_plugin_textdomain('wpucloudflare', false, dirname(plugin_basename(__FILE__)) . '/lang/');
+    }
+
+    /* ----------------------------------------------------------
+      Auto-Update
+    ---------------------------------------------------------- */
+
+    public function load_autoupdate() {
+        include dirname(__FILE__) . '/inc/WPUBaseUpdate/WPUBaseUpdate.php';
+        $this->settings_update = new \wpucloudflare\WPUBaseUpdate(
+            'WordPressUtilities',
+            $this->plugin_id,
+            $this->plugin_version);
     }
 
     /* ----------------------------------------------------------
       Settings
     ---------------------------------------------------------- */
 
-    public function plugins_loaded() {
+    public function load_settings() {
         $this->settings_details = array(
             'create_page' => true,
             'plugin_name' => $this->plugin_name,
