@@ -15,10 +15,10 @@ Handle Cloudflare reverse proxy
 ## Hooks
 
 * `wpucloudflare__purge_everything` (Action) : Purge all cache.
+* `wpucloudflare__save_post__can_clear` (Filter) : Bool (post id) : disable cache purge for a page.
+* `wpucloudflare__save_post__urls` (Filter) : Array (urls, post_id) : add more urls to purge.
 
 ## Todolist
 
 * [ ] Replace curl by WP equivalent.
-* [ ] Hook to disable singular url purge for some post types.
-* [ ] Hook to purge another URLs when saving a post ( archives, home, etc ).
 

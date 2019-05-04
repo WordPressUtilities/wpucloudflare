@@ -1,5 +1,5 @@
 <?php
-namespace wpubaseupdate_0_4_2;
+namespace wpucloudflare;
 
 /*
 Class Name: WPU Base Update
