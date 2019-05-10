@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Cloudflare\n"
-"POT-Creation-Date: 2019-05-04 21:13+0200\n"
+"POT-Creation-Date: 2019-05-10 19:52+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:109
 msgid "Import Settings"
-msgstr ""
+msgstr "Importer les paramètres"
 
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:132
 #: .././inc/WPUBaseSettings/WPUBaseSettings.php:452
@@ -45,22 +45,47 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: .././wpucloudflare.php:75
+#: .././wpucloudflare.php:79
 msgid "API Settings"
 msgstr "Réglages API"
 
-#: .././wpucloudflare.php:81
+#: .././wpucloudflare.php:82
+msgid "Tools"
+msgstr ""
+
+#: .././wpucloudflare.php:88
 msgid "Account Email"
 msgstr "Email du compte"
 
-#: .././wpucloudflare.php:84
+#: .././wpucloudflare.php:91
 msgid "Zone ID"
 msgstr "ID de la zone"
 
-#: .././wpucloudflare.php:87
+#: .././wpucloudflare.php:94
 msgid "API Key"
 msgstr "Clé API"
 
-#: .././wpucloudflare.php:105
+#: .././wpucloudflare.php:99
+msgid "NoCache"
+msgstr "NoCache"
+
+#: .././wpucloudflare.php:100
+msgid "Enable NoCache"
+msgstr "Activer NoCache"
+
+#: .././wpucloudflare.php:101
+msgid "Adds a unique parameter to all urls for logged users to avoid cache."
+msgstr "Ajoute un paramètre unique à toutes les URLs pour les utilisateurs enregistrés afin d’éviter le cache."
+
+#: .././wpucloudflare.php:119
 msgid "Clear all cache"
 msgstr "Vider tout le cache"
+
+#~ msgid "Add a unique parameter to all urls for logged users to avoid cache."
+#~ msgstr "Ajoute un paramètre unique à toutes les URL pour les utilisateurs enregistrés afin d’éviter le cache."
+
+#~ msgid "Nocache"
+#~ msgstr "NoCache"
+
+#~ msgid "Enable nocache"
+#~ msgstr "Activer NoCache"

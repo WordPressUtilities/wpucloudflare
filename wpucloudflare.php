@@ -4,7 +4,7 @@
 Plugin Name: WPU Cloudflare
 Description: Handle Cloudflare reverse proxy
 Plugin URI: https://github.com/WordPressUtilities/wpucloudflare
-Version: 0.3.1
+Version: 0.3.2
 Author: Darklg
 Author URI: http://darklg.me/
 License: MIT License
@@ -13,7 +13,7 @@ License URI: http://opensource.org/licenses/MIT
 
 class WPUCloudflare {
 
-    private $plugin_version = '0.3.1';
+    private $plugin_version = '0.3.2';
     private $plugin_id = 'wpucloudflare';
     private $plugin_name = 'WPU Cloudflare';
     private $plugin_level = 'manage_options';
@@ -36,6 +36,9 @@ class WPUCloudflare {
 
         /* External hooks */
         add_action('wpucloudflare__purge_everything', array(&$this, 'purge_everything'));
+
+        /* NoCache */
+        add_action('init', array(&$this, 'enable_nocache_urls'));
     }
 
     /* ----------------------------------------------------------
@@ -66,6 +69,7 @@ class WPUCloudflare {
         $this->settings_details = array(
             'create_page' => true,
             'plugin_name' => $this->plugin_name,
+            'plugin_basename' => plugin_basename(__FILE__),
             'plugin_id' => $this->plugin_id,
             'parent_page' => 'options-general.php',
             'user_cap' => $this->plugin_level,
@@ -73,6 +77,9 @@ class WPUCloudflare {
             'sections' => array(
                 'api_settings' => array(
                     'name' => __('API Settings', 'wpucloudflare')
+                ),
+                'tools' => array(
+                    'name' => __('Tools', 'wpucloudflare')
                 )
             )
         );
@@ -85,6 +92,13 @@ class WPUCloudflare {
             ),
             'key' => array(
                 'label' => __('API Key', 'wpucloudflare')
+            ),
+            'nocache' => array(
+                'section' => 'tools',
+                'type' => 'checkbox',
+                'label' => __('NoCache', 'wpucloudflare'),
+                'label_check' => __('Enable NoCache', 'wpucloudflare'),
+                'help' => __('Adds a unique parameter to all urls for logged users to avoid cache.', 'wpucloudflare')
             )
         );
 
@@ -132,6 +146,30 @@ class WPUCloudflare {
       Events
     ---------------------------------------------------------- */
 
+    public function enable_nocache_urls() {
+
+        /* If option enabled */
+        if (!$this->settings_values['nocache']) {
+            return;
+        }
+        /* If user logged in */
+        if (!is_user_logged_in()) {
+            return;
+        }
+
+        /* Parse all available links */
+        add_filter('home_url', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('post_link', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('page_link', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('post_type_link', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('category_link', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('tag_link', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('author_link', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('day_link', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('month_link', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('year_link', array(&$this, 'add_nocache'), 20, 1);
+    }
+
     public function save_post($post_id) {
         if (empty($_POST)) {
             return;
@@ -157,6 +195,11 @@ class WPUCloudflare {
         if (!is_array($urls)) {
             $urls = array($urls);
         }
+        if ($this->settings_values['nocache']) {
+            foreach ($urls as &$url) {
+                $url = remove_query_arg('nocache', $url);
+            }
+        }
         $this->cloudflare_request(
             'purge_cache',
             'DELETE',
@@ -175,6 +218,10 @@ class WPUCloudflare {
     /* ----------------------------------------------------------
       Helpers
     ---------------------------------------------------------- */
+
+    public function add_nocache($url) {
+        return add_query_arg('nocache', time(), $url);
+    }
 
     public function cloudflare_request($endpoint = '', $request = 'DELETE', $postfields = '') {
         $ch = curl_init('https://api.cloudflare.com/client/v4/zones/' . $this->settings_values['zone'] . '/' . $endpoint);
