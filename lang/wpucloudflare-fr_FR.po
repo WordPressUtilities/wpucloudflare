@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Cloudflare\n"
-"POT-Creation-Date: 2019-05-10 19:52+0200\n"
+"POT-Creation-Date: 2019-05-12 21:19+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -45,44 +45,48 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: .././wpucloudflare.php:79
+#: .././wpucloudflare.php:82
 msgid "API Settings"
 msgstr "Réglages API"
 
-#: .././wpucloudflare.php:82
+#: .././wpucloudflare.php:85
 msgid "Tools"
 msgstr ""
 
-#: .././wpucloudflare.php:88
+#: .././wpucloudflare.php:91
 msgid "Account Email"
 msgstr "Email du compte"
 
-#: .././wpucloudflare.php:91
+#: .././wpucloudflare.php:94
 msgid "Zone ID"
 msgstr "ID de la zone"
 
-#: .././wpucloudflare.php:94
+#: .././wpucloudflare.php:97
 msgid "API Key"
 msgstr "Clé API"
 
-#: .././wpucloudflare.php:99
+#: .././wpucloudflare.php:102
 msgid "NoCache"
 msgstr "NoCache"
 
-#: .././wpucloudflare.php:100
+#: .././wpucloudflare.php:103
 msgid "Enable NoCache"
 msgstr "Activer NoCache"
 
-#: .././wpucloudflare.php:101
+#: .././wpucloudflare.php:104
 msgid "Adds a unique parameter to all urls for logged users to avoid cache."
-msgstr "Ajoute un paramètre unique à toutes les URLs pour les utilisateurs enregistrés afin d’éviter le cache."
+msgstr ""
+"Ajoute un paramètre unique à toutes les URLs pour les utilisateurs "
+"enregistrés afin d’éviter le cache."
 
-#: .././wpucloudflare.php:119
+#: .././wpucloudflare.php:124
 msgid "Clear all cache"
 msgstr "Vider tout le cache"
 
 #~ msgid "Add a unique parameter to all urls for logged users to avoid cache."
-#~ msgstr "Ajoute un paramètre unique à toutes les URL pour les utilisateurs enregistrés afin d’éviter le cache."
+#~ msgstr ""
+#~ "Ajoute un paramètre unique à toutes les URL pour les utilisateurs "
+#~ "enregistrés afin d’éviter le cache."
 
 #~ msgid "Nocache"
 #~ msgstr "NoCache"
