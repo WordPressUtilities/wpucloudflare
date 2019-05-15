@@ -4,7 +4,7 @@
 Plugin Name: WPU Cloudflare
 Description: Handle Cloudflare reverse proxy
 Plugin URI: https://github.com/WordPressUtilities/wpucloudflare
-Version: 0.3.3
+Version: 0.3.4
 Author: Darklg
 Author URI: http://darklg.me/
 License: MIT License
@@ -13,7 +13,7 @@ License URI: http://opensource.org/licenses/MIT
 
 class WPUCloudflare {
 
-    private $plugin_version = '0.3.3';
+    private $plugin_version = '0.3.4';
     private $plugin_id = 'wpucloudflare';
     private $plugin_name = 'WPU Cloudflare';
     private $plugin_level = 'manage_options';
@@ -173,6 +173,7 @@ class WPUCloudflare {
         add_filter('day_link', array(&$this, 'add_nocache'), 20, 1);
         add_filter('month_link', array(&$this, 'add_nocache'), 20, 1);
         add_filter('year_link', array(&$this, 'add_nocache'), 20, 1);
+        add_filter('post_comments_feed_link', array(&$this, 'fix_nocache_comments_feed'), 10, 1);
     }
 
     public function save_post($post_id) {
@@ -223,6 +224,14 @@ class WPUCloudflare {
     /* ----------------------------------------------------------
       Helpers
     ---------------------------------------------------------- */
+
+    public function fix_nocache_comments_feed($content) {
+        preg_match('/\?' . $this->nocache_arg . '=([0-9a-z_-]+)\//', $content, $matches);
+        if (isset($matches[0]) && !empty($matches[0])) {
+            $content = str_replace($matches[0], '', $content) . $matches[0];
+        }
+        return $content;
+    }
 
     public function add_nocache($url) {
         return add_query_arg($this->nocache_arg, $this->nocache_value, $url);
