@@ -4,7 +4,7 @@
 Plugin Name: WPU Cloudflare
 Description: Handle Cloudflare reverse proxy
 Plugin URI: https://github.com/WordPressUtilities/wpucloudflare
-Version: 0.3.4
+Version: 0.3.5
 Author: Darklg
 Author URI: http://darklg.me/
 License: MIT License
@@ -13,7 +13,7 @@ License URI: http://opensource.org/licenses/MIT
 
 class WPUCloudflare {
 
-    private $plugin_version = '0.3.4';
+    private $plugin_version = '0.3.5';
     private $plugin_id = 'wpucloudflare';
     private $plugin_name = 'WPU Cloudflare';
     private $plugin_level = 'manage_options';
@@ -190,7 +190,27 @@ class WPUCloudflare {
             get_permalink($post_id)
         ), $post_id);
 
+        if (!is_array($urls)) {
+            $urls = array($urls);
+        }
+
+        if ($this->settings_values['nocache']) {
+            foreach ($urls as &$url) {
+                $url = remove_query_arg($this->nocache_arg, $url);
+            }
+        }
+
         $this->purge_urls($urls);
+
+        foreach ($urls as $url) {
+            wp_remote_get($url,
+                array(
+                    'blocking' => false,
+                    'sslverify' => false
+                )
+            );
+        }
+
     }
 
     /* ----------------------------------------------------------
@@ -198,14 +218,6 @@ class WPUCloudflare {
     ---------------------------------------------------------- */
 
     public function purge_urls($urls = array()) {
-        if (!is_array($urls)) {
-            $urls = array($urls);
-        }
-        if ($this->settings_values['nocache']) {
-            foreach ($urls as &$url) {
-                $url = remove_query_arg($this->nocache_arg, $url);
-            }
-        }
         $this->cloudflare_request(
             '/purge_cache',
             'DELETE',
