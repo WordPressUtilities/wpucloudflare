@@ -4,7 +4,7 @@
 Plugin Name: WPU Cloudflare
 Description: Handle Cloudflare reverse proxy
 Plugin URI: https://github.com/WordPressUtilities/wpucloudflare
-Version: 0.3.5
+Version: 0.4.0
 Author: Darklg
 Author URI: http://darklg.me/
 License: MIT License
@@ -13,7 +13,7 @@ License URI: http://opensource.org/licenses/MIT
 
 class WPUCloudflare {
 
-    private $plugin_version = '0.3.5';
+    private $plugin_version = '0.4.0';
     private $plugin_id = 'wpucloudflare';
     private $plugin_name = 'WPU Cloudflare';
     private $plugin_level = 'manage_options';
@@ -250,25 +250,24 @@ class WPUCloudflare {
     }
 
     public function cloudflare_request($endpoint = '', $request = 'DELETE', $postfields = '') {
-        $ch = curl_init($this->cloudflare_api_baseurl . $this->settings_values['zone'] . $endpoint);
-        curl_setopt_array($ch, array(
-            CURLOPT_CUSTOMREQUEST => $request,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_HTTPHEADER => array(
-                'X-Auth-Email: ' . $this->settings_values['email'],
-                'X-Auth-Key: ' . $this->settings_values['key'],
-                'Content-Type: application/json'
+        $api_url = $this->cloudflare_api_baseurl . $this->settings_values['zone'] . $endpoint;
+        $args = array(
+            'headers' => array(
+                'Content-Type' => 'application/json',
+                'X-Auth-Email' => $this->settings_values['email'],
+                'X-Auth-Key' => $this->settings_values['key']
             ),
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $postfields
-        ));
-        $ex = curl_exec($ch);
-        curl_close($ch);
+            'body' => $postfields,
+            'method' => strtoupper($request),
+            'sslverify' => false,
+            'timeout' => 10,
+        );
+
+        $ex = wp_remote_request($api_url, $args);
 
         if (WP_DEBUG) {
-            error_log($ex);
+            error_log($ex['body']);
+            error_log(json_encode($ex['response']));
         }
     }
 

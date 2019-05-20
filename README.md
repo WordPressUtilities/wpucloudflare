@@ -18,7 +18,4 @@ Handle Cloudflare reverse proxy
 * `wpucloudflare__save_post__can_clear` (Filter) : Bool (post id) : disable cache purge for a page.
 * `wpucloudflare__save_post__urls` (Filter) : Array (urls, post_id) : add more urls to purge.
 
-## Todolist
-
-* [ ] Replace curl by WP equivalent.
 
