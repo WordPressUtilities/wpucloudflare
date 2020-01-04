@@ -4,7 +4,7 @@
 Plugin Name: WPU Cloudflare
 Description: Handle Cloudflare reverse proxy
 Plugin URI: https://github.com/WordPressUtilities/wpucloudflare
-Version: 0.4.1
+Version: 0.4.2
 Author: Darklg
 Author URI: http://darklg.me/
 License: MIT License
@@ -13,7 +13,7 @@ License URI: http://opensource.org/licenses/MIT
 
 class WPUCloudflare {
 
-    private $plugin_version = '0.4.1';
+    private $plugin_version = '0.4.2';
     private $plugin_id = 'wpucloudflare';
     private $plugin_name = 'WPU Cloudflare';
     private $plugin_level = 'manage_options';
@@ -39,6 +39,7 @@ class WPUCloudflare {
 
         /* External hooks */
         add_action('wpucloudflare__purge_everything', array(&$this, 'purge_everything'));
+        add_action('wpucloudflare__purge_urls', array(&$this, 'purge_urls'), 10, 1);
 
         /* NoCache */
         add_action('init', array(&$this, 'enable_nocache_urls'));
@@ -281,4 +282,8 @@ $WPUCloudflare = new WPUCloudflare();
 
 function wpucloudflare_purge_everything() {
     do_action('wpucloudflare__purge_everything');
+}
+
+function wpucloudflare_purge_urls($urls = array()) {
+    do_action('wpucloudflare__purge_urls', $urls);
 }
