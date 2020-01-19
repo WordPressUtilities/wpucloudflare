@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPU Cloudflare\n"
-"POT-Creation-Date: 2019-05-20 20:25+0200\n"
+"POT-Creation-Date: 2020-01-19 21:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Darklg <darklg.blog@gmail.com>\n"
 "Language-Team: \n"
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.2\n"
+"X-Generator: Poedit 2.2.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
 "X-Poedit-KeywordsList: __;_e\n"
@@ -45,41 +45,41 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: .././wpucloudflare.php:82
+#: .././wpucloudflare.php:83
 msgid "API Settings"
 msgstr "Réglages API"
 
-#: .././wpucloudflare.php:85
+#: .././wpucloudflare.php:86
 msgid "Tools"
 msgstr ""
 
-#: .././wpucloudflare.php:91
+#: .././wpucloudflare.php:92
 msgid "Account Email"
 msgstr "Email du compte"
 
-#: .././wpucloudflare.php:94
+#: .././wpucloudflare.php:95
 msgid "Zone ID"
 msgstr "ID de la zone"
 
-#: .././wpucloudflare.php:97
+#: .././wpucloudflare.php:98
 msgid "API Key"
 msgstr "Clé API"
 
-#: .././wpucloudflare.php:102
+#: .././wpucloudflare.php:103
 msgid "NoCache"
 msgstr "NoCache"
 
-#: .././wpucloudflare.php:103
+#: .././wpucloudflare.php:104
 msgid "Enable NoCache"
 msgstr "Activer NoCache"
 
-#: .././wpucloudflare.php:104
+#: .././wpucloudflare.php:105
 msgid "Adds a unique parameter to all urls for logged users to avoid cache."
 msgstr ""
 "Ajoute un paramètre unique à toutes les URLs pour les utilisateurs "
 "enregistrés afin d’éviter le cache."
 
-#: .././wpucloudflare.php:124
+#: .././wpucloudflare.php:125
 msgid "Clear all cache"
 msgstr "Vider tout le cache"
 

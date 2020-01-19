@@ -17,5 +17,6 @@ Handle Cloudflare reverse proxy
 * `wpucloudflare__purge_everything` (Action) : Purge all cache.
 * `wpucloudflare__save_post__can_clear` (Filter) : Bool (post id) : disable cache purge for a page.
 * `wpucloudflare__save_post__urls` (Filter) : Array (urls, post_id) : add more urls to purge.
+* `wpucloudflare__save_post__excluded_post_types` (Filter) : Array (post_type_slug) : Avoid save_post action for those post_types.
 
 
